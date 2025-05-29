@@ -1,0 +1,9 @@
+# PER AFEGIR FITXER
+git add nom_del_fitxer
+git commit -m "misssatge del commit"
+git push
+
+# PER AGAFAR ELS CANVIS
+git pull
+
+
