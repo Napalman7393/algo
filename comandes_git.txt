@@ -16,3 +16,8 @@ git clone https://github.com/Napalman7393/algo.git # per clonar el que hi ha
 git switch -c nom_de_la_branca
 # PRIMERA VEGADA EN UNA BRANCA git push --set-upstream origin nom_de_la_branca
 
+# Per canviar de branca
+git checkout nom_de_la_branca
+
+# Per actualitzar la meva branca
+git merge origin/main
