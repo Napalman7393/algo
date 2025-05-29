@@ -1,0 +1,18 @@
+# PER AFEGIR FITXER
+git add nom_del_fitxer
+git commit -m "misssatge del commit"
+git push
+
+# PER AGAFAR ELS CANVIS
+git pull
+
+# SI ENS ES IGUAL EL QUE TENIM I VOLEM AGAFAR EL QUE HI HA AL MAIN
+cd .. # Per tirar endarrere
+rm -rf nom_del_directori # per borrar
+git clone https://github.com/Napalman7393/algo.git # per clonar el que hi ha
+
+# BRANQUES
+# Per crear una branca
+git switch -c nom_de_la_branca
+# PRIMERA VEGADA EN UNA BRANCA git push --set-upstream origin nom_de_la_branca
+
