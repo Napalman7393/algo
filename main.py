@@ -12,7 +12,7 @@ pygame.display.set_caption("Projecte Hackton")
 
 fish = pygame.image.load("main_scren/images/Fish.png")
 fish_rect = fish.get_rect() 
-pene = 640
+fish_x = 640
 
 
 
@@ -28,9 +28,9 @@ while running:
 
 #objectes
     pantalla.fill("chartreuse2")
-    pene -= 1
+    fish_x -= 1
     pantalla.blit(fish, fish_rect)
-    fish_rect.center = (pene, alt_pantalla // 2)
+    fish_rect.center = (fish_x, alt_pantalla // 2)
     
     
 
