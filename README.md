@@ -1,3 +1,5 @@
 # UN PROJECTE
 
 Hola ricard
+
+PER FI FUNCIONA GITHUB!
