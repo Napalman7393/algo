@@ -11,7 +11,10 @@ pygame.display.set_caption("Minigames")
 
 # Importació de les imatges
 
-play_button = pygame.image.load("assets/play_button.png")
+play_button = pygame.image.load("main_screen/images/Buttons/Play_button.png").convert_alpha()
+difficulty_button_easy = pygame.image.load("main_screen/images/Buttons/Difficulty_easy_button.png").convert_alpha()
+difficulty_button_medium = pygame.image.load("main_screen/images/Buttons/Difficulty_medium_button.png").convert_alpha()
+difficulty_button_hard = pygame.image.load("main_screen/images/Buttons/Difficulty_hard_button.png").convert_alpha()
 
 # Configuració del rellotge
 
