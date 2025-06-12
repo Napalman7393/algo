@@ -2,8 +2,8 @@ import pygame
 pygame.init()
 import random
 class ReactionTimeGame:
-    def __init__(self, time, dificulty):
-        self.dificulty = dificulty
+    def __init__(self, time,):
+      
         self.time = time
 
 
@@ -12,6 +12,8 @@ altura_pantalla = 720
 pantalla = pygame.display.set_mode((amplada_pantalla, altura_pantalla))
 pygame.display.set_caption("Reaction Time Game")
 
+
+#ja es la variable que indica si es el momento de clicar o no
 Ja = False
 
 runin = True
