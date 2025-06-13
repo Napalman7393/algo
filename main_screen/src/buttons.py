@@ -29,8 +29,14 @@ reaction_time_button = pygame.transform.scale(reaction_time_image, ((reaction_ti
 play_button_rect = play_button_apretat.get_rect(center = (amplada_pantalla // 2, altura_pantalla // 2))
 play_button_apretat_rect = play_button.get_rect(center = (amplada_pantalla // 2, altura_pantalla // 2))
 
-difficulty_button_easy_rect = difficulty_button_easy.get_rect(topleft = (50, 50))
+difficulty_button_easy_rect = difficulty_button_easy.get_rect(topleft = (50, 150))
 difficulty_button_medium_rect = difficulty_button_medium.get_rect(topleft = (50, 150))
-difficulty_button_hard_rect = difficulty_button_hard.get_rect(topleft = (50, 250))
+difficulty_button_hard_rect = difficulty_button_hard.get_rect(topleft = (50, 150))
 
 reaction_time_button_rect = reaction_time_button.get_rect(topleft = (50, 350))
+
+
+# Llista botons dificultat
+
+difficulty_buttons_list = [difficulty_button_easy, difficulty_button_medium, difficulty_button_hard]
+difficulty_buttons_list_rects = [difficulty_button_easy_rect, difficulty_button_medium_rect, difficulty_button_hard_rect]
