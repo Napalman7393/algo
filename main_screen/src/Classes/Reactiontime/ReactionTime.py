@@ -24,8 +24,7 @@ class ReactionTimeGame:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     runin = False
-                    
-                if self.ja and event.type == pygame.MOUSEBUTTONDOWN:
+                if self.ja and event.type == pygame.MOUSEBUTTONDOWN and not self.panSco:
                     self.score = pygame.time.get_ticks() - (self.inici + self.temps_espera)
                     self.font = pygame.font.SysFont(None, 74)
                     self.score_text = self.font.render(f"Temps de reacció: {self.score} ms", True, (0, 0, 0))
