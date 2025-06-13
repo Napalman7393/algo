@@ -1,4 +1,5 @@
 import pygame
+
 from buttons import play_button, play_button_rect, play_button_apretat, play_button_apretat_rect
 from buttons import difficulty_button_easy, difficulty_button_easy_rect, difficulty_button_medium, difficulty_button_medium_rect, difficulty_button_hard, difficulty_button_hard_rect
 from buttons import reaction_time_button, reaction_time_button_rect
