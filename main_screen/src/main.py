@@ -1,5 +1,5 @@
 import pygame
-from buttons import play_button, play_button_rect, difficulty_button_easy, difficulty_button_easy_rect, difficulty_button_medium, difficulty_button_medium_rect, difficulty_button_hard, difficulty_button_hard_rect
+from buttons import play_button, play_button_rect, play_button_apretat, play_button_apretat_rect, difficulty_button_easy, difficulty_button_easy_rect, difficulty_button_medium, difficulty_button_medium_rect, difficulty_button_hard, difficulty_button_hard_rect
 
 pygame.init()
 
@@ -37,6 +37,10 @@ while running:
         pantalla.blit(difficulty_button_medium, difficulty_button_medium_rect)
         pantalla.blit(difficulty_button_hard, difficulty_button_hard_rect)
 
+    mouse_position = pygame.mouse.get_pos()
+
+    if play_button_rect.collidepoint(mouse_position):
+        pantalla.blit(play_button_apretat, play_button_apretat_rect)
     
     pygame.display.update()
     clock.tick(60)
