@@ -12,6 +12,7 @@ class ReactionTimeGame:
         self.temps_espera = random.randint(1, 5) * 1000
         self.inici = pygame.time.get_ticks()
         self.score = None
+        self.panSco = False
 
     def run(self):
         runin = True
@@ -22,8 +23,9 @@ class ReactionTimeGame:
                 if self.ja and event.type == pygame.MOUSEBUTTONDOWN:
                     self.score = pygame.time.get_ticks() - (self.inici + self.temps_espera)
                     self.font = pygame.font.SysFont(None, 74)
-                    self.score_text = self.font.render(f"Temps de reacció: {self.score} ms", True, (255, 255, 255))
-                    print(f"Temps de reacció: {self.score} ms")
+                    self.score_text = self.font.render(f"Temps de reacció: {self.score} ms", True, (0, 0, 0))
+                    self.panSco = True
+
                     
 
             temps_actual = pygame.time.get_ticks()
@@ -34,6 +36,10 @@ class ReactionTimeGame:
                 self.pantalla.fill("Red")
             else:
                 self.pantalla.fill("Green")
+                if self.panSco:
+                    self.pantalla.fill("blue")
+                    self.pantalla.blit(self.score_text,(0, 0))
+                    
 
             pygame.display.update()
         pygame.quit()
