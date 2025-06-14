@@ -22,6 +22,7 @@ clock = pygame.time.Clock()
 
 # Creació de les variables principals
 
+estat_actual = "menu"
 any_game_running = False
 difficulty_mode = 0 # 0: easy, 1: medium, 2: hard
 difficulty_wait_change = 10
@@ -39,18 +40,26 @@ while running:
 
 # Dibuixar els botons a la pantalla si no hi ha cap joc actiu
 
-    if any_game_running == False:
-        pantalla.blit(play_button, play_button_rect)
+    if estat_actual == "menu":
+        pantalla.blit(reaction_time_button, reaction_time_button_rect)
 
     mouse_position = pygame.mouse.get_pos()
 
-    if play_button_rect.collidepoint(mouse_position):
-        pantalla.blit(play_button_apretat, play_button_apretat_rect)
-    
-    pantalla.blit(difficulty_buttons_list[difficulty_mode], difficulty_buttons_list_rects[difficulty_mode])
+    if reaction_time_button_rect.collidepoint(mouse_position) and event.type == pygame.MOUSEBUTTONDOWN:
+
+        estat_actual = "reaction_time_game"
+        any_game_running = True
+       
+    if any_game_running == True:
+
+        pantalla.blit(difficulty_buttons_list[difficulty_mode], difficulty_buttons_list_rects[difficulty_mode])
+        pantalla.blit(play_button, play_button_rect)
+        if play_button_rect.collidepoint(mouse_position):
+
+            pantalla.blit(play_button_apretat, play_button_apretat_rect)
 
     if difficulty_wait_change == 0:
-        if difficulty_button_easy_rect.collidepoint(mouse_position) and pygame.mouse.get_pressed()[0]:
+        if difficulty_button_easy_rect.collidepoint(mouse_position) and event.type == pygame.MOUSEBUTTONDOWN:
             difficulty_wait_change = 10
             if difficulty_mode == 2:
                 difficulty_mode = 0
