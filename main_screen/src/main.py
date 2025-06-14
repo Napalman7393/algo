@@ -389,7 +389,7 @@ def pantalla_menu(surface):
     # Botó per al Joc de Reacció a la Llum
     boto_reaccio_rect = dibuixar_boto(
         GAME_MODES["reaccio_llum"]["name"], font_menu_button, WHITE, GREEN, 
-        WIDTH//2 - 150, HEIGHT//2 + 60, 300, 70, surface
+        WIDTH//2 - 175, HEIGHT//2 + 60, 350, 70, surface
     )
     
     return {"dianes_classiques": boto_dianes_rect, "reaccio_llum": boto_reaccio_rect}
