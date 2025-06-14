@@ -473,7 +473,7 @@ def send_progress_to_server(level, score, total_time_in_game, is_final=False, ga
                     print(f"   Contingut del camp 'data' de la resposta (desempaquetat per tu):")
                     print(json.dumps(inner_data, indent=2))
                 else:
-                    print("   El camp 'data' no és una cadena o no existeix a la resposta del servidor.")
+                    print("   Holaa! ")
 
             except json.JSONDecodeError:
                 print(f"   La resposta del servidor no és un JSON vàlid: {response.text}")
