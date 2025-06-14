@@ -15,7 +15,8 @@ class ReactionTimeGame:
         self.inici = pygame.time.get_ticks()
         self.score = None
         self.panSco = False
-        
+        self.font = pygame.font.SysFont(None, 74)
+        self.waitButton = pygame.image.load("algo/main_screen/src/Wait_button.png")
         # PanSco és una variable per controlar si s'ha de mostrar el text del temps de reacció a la pantalla o no.
 
     def run(self):
@@ -32,6 +33,7 @@ class ReactionTimeGame:
                     self.panSco = True
 
                 if not self.ja and event.type == pygame.MOUSEBUTTONDOWN:
+                    self.perFont = pygame.font.SysFont(None, 74)
                     self.perdTxt = self.font.render(f"Massa d'hora", True, (0, 0, 0))
 
 
@@ -41,6 +43,7 @@ class ReactionTimeGame:
 
             if not self.ja:
                 self.pantalla.fill("Red")
+                self.pantalla.blit()
             elif self.panSco:
                 self.pantalla.fill("lightblue")
                 self.pantalla.blit(self.score_text, (0, 0))
