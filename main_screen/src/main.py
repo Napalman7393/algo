@@ -1,6 +1,8 @@
 import pygame
 import time
 
+from Classes.Reactiontime.ReactionTime import ReactionTimeGame
+
 from buttons import (
     play_button, play_button_rect, play_button_apretat, play_button_apretat_rect,
     difficulty_button_easy, difficulty_button_easy_rect,
@@ -61,6 +63,11 @@ while running:
                 if reaction_time_button_rect.collidepoint(mouse_position):
                     estat_actual = "reaction_time_game"
                     any_game_running = True
+                    reaction_time_execute = ReactionTimeGame()
+
+                    if play_button_rect.collidepoint(mouse_position) and event.type == pygame.MOUSEBUTTONDOWN:
+                        reaction_time_execute.run()
+                        estat_actual = "playing_reaction_time_game"
 
             elif any_game_running:
                 # Controla canvi de dificultat amb cooldown
