@@ -1,11 +1,7 @@
 import pygame
 import time
 
-from Classes.Reactiontime.ReactionTime import ReactionTimeGame
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
+from Reaction_time.ReactionTime import ReactionTimeGame
 from buttons import (
     play_button, play_button_rect, play_button_apretat, play_button_apretat_rect,
     difficulty_button_easy, difficulty_button_easy_rect,
