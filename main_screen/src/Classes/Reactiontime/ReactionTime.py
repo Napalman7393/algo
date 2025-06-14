@@ -2,7 +2,7 @@ import pygame
 import random
 
 class ReactionTimeGame:
-    def __init__(self):
+    def __init__(self,):
 
         self.amplada_pantalla = 1270
         self.altura_pantalla = 720
@@ -15,6 +15,7 @@ class ReactionTimeGame:
         self.inici = pygame.time.get_ticks()
         self.score = None
         self.panSco = False
+        
         # PanSco és una variable per controlar si s'ha de mostrar el text del temps de reacció a la pantalla o no.
 
     def run(self):
@@ -30,7 +31,9 @@ class ReactionTimeGame:
                     self.score_text = self.font.render(f"Temps de reacció: {self.score} ms", True, (0, 0, 0))
                     self.panSco = True
 
-                    
+                if not self.ja and event.type == pygame.MOUSEBUTTONDOWN:
+                    self.perdTxt = self.font.render(f"Massa d'hora", True, (0, 0, 0))
+
 
             temps_actual = pygame.time.get_ticks()
             if not self.ja and temps_actual - self.inici >= self.temps_espera:
@@ -38,11 +41,11 @@ class ReactionTimeGame:
 
             if not self.ja:
                 self.pantalla.fill("Red")
+            elif self.panSco:
+                self.pantalla.fill("lightblue")
+                self.pantalla.blit(self.score_text, (0, 0))
             else:
                 self.pantalla.fill("Green")
-                if self.panSco:
-                    self.pantalla.fill("blue")
-                    self.pantalla.blit(self.score_text,(0, 0))
                     
 
             pygame.display.update()
