@@ -67,12 +67,10 @@ while running:
                     reaction_time_execute = ReactionTimeGame()
 
                     if play_button_rect.collidepoint(mouse_position) and event.type == pygame.MOUSEBUTTONDOWN:
+                        
+                        estat_actual = "playing_reaction_time_game"
                         reaction_time_execute.run()
-                        estat_actual = "playing_reaction_time_game"
-
-                    if play_button_rect.collidepoint(mouse_position) and event.type == pygame.MOUSEBUTTONDOWN:
-
-                        estat_actual = "playing_reaction_time_game"
+                        
 
 
             elif any_game_running:
