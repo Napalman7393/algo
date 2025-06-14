@@ -9,7 +9,7 @@ pygame.init()
 # Constants de pantalla
 WIDTH, HEIGHT = 900, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Col·lecció de Mini-Jocs")
+pygame.display.set_caption("Col·lecció de Mini-Jocs") # Nom del joc canviat per reflectir que són varis
 
 # Colors
 WHITE = (255, 255, 255)
@@ -24,7 +24,7 @@ ORANGE = (255, 165, 0) # Per la llum quan no és verda
 # Fonts del joc
 font_title = pygame.font.SysFont(None, 64)
 font_info = pygame.font.SysFont(None, 32)
-font_menu_button = pygame.font.SysFont(None, 40)
+font_menu_button = pygame.font.SysFont(None, 40) # Nova font per als botons del menú
 font_reacció_gran = pygame.font.SysFont(None, 80) # Nova font per temps de reacció
 
 # Configuració del joc
@@ -41,15 +41,16 @@ try:
 
 except pygame.error as e:
     print(f"ERROR: No s'han pogut carregar totes les imatges necessàries per al Joc de Dianes. Assegura't que els fitxers existeixen i les rutes són correctes:")
-    print(f"  - main_screen/images/Dianes/Diana1.png")
-    print(f"  - main_screen/images/Dianes/Diana2.png")
-    print(f"  - main_screen/images/Dianes/Diana_Trencada.png")
-    print(f"  - main_screen/images/Dianes/Diana2_Trencada.png")
+    print(f"   - main_screen/images/Dianes/Diana1.png")
+    print(f"   - main_screen/images/Dianes/Diana2.png")
+    print(f"   - main_screen/images/Dianes/Diana_Trencada.png")
+    print(f"   - main_screen/images/Dianes/Diana2_Trencada.png")
     print(f"Detall de l'error: {e}")
     pygame.quit()
     exit()
 
 # --- Configuració de les Dianes (per al Joc de Dianes) ---
+# He canviat DIANA_TYPES per una configuració més específica per a cada diana en el mode "dianes_classiques"
 DIANA_NORMAL_1 = {   
     "name": "Normal1",
     "idle_image": TARGET_IDLE_IMAGE_1,
@@ -68,15 +69,16 @@ DIANA_NORMAL_2 = {
 }
 
 # --- Configuració dels Modes de Joc (Els dos Jocs) ---
+# Aquest diccionari defineix els diferents jocs que pots seleccionar des del menú.
 GAME_MODES = {
     "dianes_classiques": {
         "name": "Joc de Dianes",
-        "game_class": "JocDianes",
-        "allowed_diana_types": [DIANA_NORMAL_1, DIANA_NORMAL_2],
+        "game_class": "JocDianes", # El nom de la classe que gestiona aquest joc
+        "allowed_diana_types": [DIANA_NORMAL_1, DIANA_NORMAL_2], # Específic per al joc de dianes
     },
     "reaccio_llum": {
         "name": "Joc de Reacció a la Llum",
-        "game_class": "JocReaccioLlum",
+        "game_class": "JocReaccioLlum", # El nom de la classe que gestiona aquest joc
     }
 }
 
@@ -143,9 +145,9 @@ class Diana:
 
 class JocDianes:
     """Gestiona la lògica principal del joc de dianes."""
-    def __init__(self, screen_ref, game_mode_config):
+    def __init__(self, screen_ref, game_mode_config): # Ara rep la configuració del mode
         self.screen = screen_ref
-        self.game_mode = game_mode_config # Rep la configuració del mode (diana_classiques)
+        self.game_mode = game_mode_config # Guarda la configuració del mode (dianes_classiques)
         self.nivell = 1
         self.score = 0
         self.dianes = []
@@ -158,6 +160,7 @@ class JocDianes:
         self.dianes.clear()
         num_dianes = min(3 + self.nivell, 10)
         
+        # Utilitzem la llista de tipus de dianes permesos per a aquest mode de joc
         allowed_dianas_for_spawn = self.game_mode["allowed_diana_types"]
         
         for _ in range(num_dianes):
@@ -171,15 +174,15 @@ class JocDianes:
             diana = Diana(x, y, speed, diana_config)
             self.dianes.append(diana)
         
-        random.shuffle(self.dianes) 
-        self.inici_nivell = pygame.time.get_ticks()
+        random.shuffle(self.dianes) # Barreja les dianes per a un ordre aleatori
+        self.inici_nivell = pygame.time.get_ticks() # Reinicia el temps del nivell
 
     def actualitzar(self):
         """Actualitza l'estat de totes les dianes."""
         for diana in self.dianes:
             diana.update()
 
-    def dibuixar(self):
+    def dibuixar(self, temps_passat_total): # S'ha afegit temps_passat_total com a paràmetre, encara que no s'usi aquí
         """Dibuixa tots els elements del joc a la pantalla."""
         self.screen.fill(GRAY)
         for diana in self.dianes:
@@ -219,7 +222,7 @@ class JocDianes:
         """Comprova si el temps límit del nivell s'ha esgotat."""
         return pygame.time.get_ticks() - self.inici_nivell >= self.temps_limit
 
-
+# --- Nova Classe: Joc de Reacció a la Llum ---
 class JocReaccioLlum:
     """Gestiona la lògica principal del joc de reacció a la llum."""
     def __init__(self, screen_ref, game_mode_config):
@@ -232,7 +235,7 @@ class JocReaccioLlum:
         self.ultim_temps_reaccio = 0 # El temps de la darrera reacció
 
         self.circle_color = ORANGE # Color inicial del cercle
-        self.light_on_time = 0      # Moment en què la llum es posa verda
+        self.light_on_time = 0       # Moment en què la llum es posa verda
         self.waiting_for_click = False # Estem esperant que es posi verda i cliqui
         self.last_state_change = pygame.time.get_ticks() # Per controlar els intervals d'espera
 
@@ -281,7 +284,7 @@ class JocReaccioLlum:
             if current_time - self.last_state_change > 1500: # Espera 1.5 segons
                 self.reset_ronda()
 
-    def dibuixar(self):
+    def dibuixar(self, temps_passat_total):
         """Dibuixa els elements del joc de reacció a la pantalla."""
         self.screen.fill(BLACK) # Fons negre per al joc de reacció
 
@@ -338,8 +341,10 @@ class JocReaccioLlum:
     def get_final_score(self):
         """Retorna la puntuació final i la mitjana de temps de reacció."""
         avg_reaction = 0
-        if self.ronda_actual > 1: # Si hi ha hagut almenys una ronda de reacció
-             avg_reaction = self.temps_total_reaccio / (self.ronda_actual - 1)
+        if self.ronda_actual > 1 and self.temps_total_reaccio > 0: # Si hi ha hagut almenys una ronda de reacció vàlida
+            # El -1 és perquè ronda_actual ja haurà avançat per a la següent ronda si el joc ha acabat
+            # Ens assegurem que el divisor no sigui zero.
+            avg_reaction = self.temps_total_reaccio / (self.ronda_actual -1) if (self.ronda_actual - 1) > 0 else 0
         
         return {
             "score": self.score,
@@ -357,28 +362,34 @@ def dibuixar_text(text, font, color, x, y, surface):
 def dibuixar_boto(text, font, color_text, color_fons, x, y, amplada, altura, surface):
     """Dibuixa un botó rectangular amb text i retorna el seu rectangle."""
     rect = pygame.Rect(x, y, amplada, altura)
-    pygame.draw.rect(surface, color_fons, rect, border_radius=10) 
+    pygame.draw.rect(surface, color_fons, rect, border_radius=10) # border_radius per cantonades arrodonides
     text_surf = font.render(text, True, color_text)
     text_rect = text_surf.get_rect(center=rect.center)
     surface.blit(text_surf, text_rect)
     return rect
 
 
+### Gestió de Pantalles
+
+#Per tenir múltiples jocs, necessitem una pantalla de menú per escollir i una pantalla final que pugui mostrar resultats de qualsevol joc.
+
 def pantalla_menu(surface):
     """Mostra el menú principal del joc."""
-    surface.fill(GRAY) 
+    surface.fill(GRAY) # Fons gris per al menú
     
     text_width, _ = font_title.size("Selecciona el Joc")
     dibuixar_text("Selecciona el Joc", font_title, BLACK, WIDTH//2 - text_width//2, HEIGHT//2 - 150, surface)
 
+    # Botó per al Joc de Dianes Clàssiques
     boto_dianes_rect = dibuixar_boto(
         GAME_MODES["dianes_classiques"]["name"], font_menu_button, WHITE, BLUE, 
         WIDTH//2 - 150, HEIGHT//2 - 30, 300, 70, surface
     )
 
+    # Botó per al Joc de Reacció a la Llum
     boto_reaccio_rect = dibuixar_boto(
         GAME_MODES["reaccio_llum"]["name"], font_menu_button, WHITE, GREEN, 
-        WIDTH//2 - 175, HEIGHT//2 + 60, 350, 70, surface
+        WIDTH//2 - 150, HEIGHT//2 + 60, 300, 70, surface
     )
     
     return {"dianes_classiques": boto_dianes_rect, "reaccio_llum": boto_reaccio_rect}
@@ -395,7 +406,7 @@ def pantalla_final(score_info, surface, game_mode_name):
         text_score = f"Puntuació final: {score_info['score']}"
     elif game_mode_name == "reaccio_llum":
         text_score = f"Puntuació total: {score_info['score']}"
-        if score_info['avg_reaction_time'] > 0:
+        if score_info.get('avg_reaction_time', 0) > 0: # Utilitzem .get per seguretat
             dibuixar_text(f"Temps de reacció mitjà: {score_info['avg_reaction_time']}ms", font_info, BLACK, WIDTH//2 - 200, HEIGHT//2 + 20, surface)
         else:
             dibuixar_text("No hi ha temps de reacció per mostrar.", font_info, BLACK, WIDTH//2 - 200, HEIGHT//2 + 20, surface)
@@ -406,7 +417,10 @@ def pantalla_final(score_info, surface, game_mode_name):
     dibuixar_text("Prem ESPAI per tornar al menú o ESC per sortir", font_info, BLACK, WIDTH//2 - 250, HEIGHT//2 + 90, surface)
 
 
-# --- Funció per Enviar Progrés al Servidor ---
+### Funció d'enviament al servidor (millorada per acceptar dades addicionals)
+
+#He fet que la funció `send_progress_to_server` pugui acceptar un diccionari amb `extra_data`, ideal per enviar el temps de reacció mitjà del joc de llum.
+
 def send_progress_to_server(level, score, total_time_in_game, is_final=False, game_mode_name="unknown", extra_data=None):
     """
     Envia les dades de progrés del joc al servidor.
@@ -430,82 +444,90 @@ def send_progress_to_server(level, score, total_time_in_game, is_final=False, ga
     
     payload = {
         "game_id": GAME_ID,
-        "data": json.dumps(game_data)
+        "data": json.dumps(game_data) # Convertim el diccionari game_data a una cadena JSON
     }
     
     print("\n--- Iniciant enviament de dades de progrés al servidor ---")
-    print(f"  URL: {SERVER_URL}")
-    print(f"  Payload complet (tal com s'envia, format JSON):")
-    print(json.dumps(payload, indent=2)) 
+    print(f"   URL: {SERVER_URL}")
+    print(f"   Payload complet (tal com s'envia, format JSON):")
+    print(json.dumps(payload, indent=2)) # Per visualitzar-ho millor
     
-    print(f"  Contingut del camp 'data' (JSON intern sense escapar):")
-    print(json.dumps(game_data, indent=2)) 
+    print(f"   Contingut del camp 'data' (JSON intern sense escapar):")
+    print(json.dumps(game_data, indent=2)) # Mostrem el contingut real de 'data'
     print("-----------------------------------------------------")
 
     try:
         response = requests.post(SERVER_URL, json=payload, timeout=5)
-        response.raise_for_status() 
+        response.raise_for_status() # Llença una excepció per a codis d'estat HTTP d'error (4xx o 5xx)
         print(f"Progrés enviat amb èxit! Codi de resposta: {response.status_code}")
         
         if response.content:
             try:
                 server_response_json = response.json()
-                print(f"  Resposta JSON completa del servidor:")
-                print(json.dumps(server_response_json, indent=2)) 
+                print(f"   Resposta JSON completa del servidor:")
+                print(json.dumps(server_response_json, indent=2)) # Per visualitzar-ho millor
                 
+                # Intentem des-serialitzar el camp 'data' si és una cadena
                 if 'data' in server_response_json and isinstance(server_response_json['data'], str):
                     inner_data = json.loads(server_response_json['data'])
-                    print(f"  Contingut del camp 'data' de la resposta (desempaquetat per tu):")
+                    print(f"   Contingut del camp 'data' de la resposta (desempaquetat per tu):")
                     print(json.dumps(inner_data, indent=2))
                 else:
-                    print("  El camp 'data' no és una cadena o no existeix a la resposta del servidor.")
+                    print("   El camp 'data' no és una cadena o no existeix a la resposta del servidor.")
 
             except json.JSONDecodeError:
-                print(f"  La resposta del servidor no és un JSON vàlid: {response.text}")
+                print(f"   La resposta del servidor no és un JSON vàlid: {response.text}")
         else:
-            print("  Resposta buida del servidor.")
+            print("   Resposta buida del servidor.")
 
     except requests.exceptions.RequestException as e:
         print(f"Error en enviar progrés: {e}")
     print("--- Finalitzat enviament de dades ---")
 
 
+### Bucle Principal del Joc (amb la lògica per canviar entre jocs)
+
+#Aquí és on es gestionen els diferents estats del joc (`"menu"`, `"jugant"`, `"final"`) i es creen els objectes de joc corresponents.
+
 # --- Bucle Principal del Joc ---
 
-estat = "menu" 
+estat = "menu" # El joc comença al menú ara
 joc_actual = None # Variable per guardar l'objecte del joc que s'està executant
 final_score_info = {"score": 0} # Diccionari per guardar la info de la puntuació final (inclou avg_reaction)
-current_game_mode_name = "unknown" 
+current_game_mode_name = "unknown" # Per saber quin joc s'estava jugant al final
 
-last_progress_send_time = pygame.time.get_ticks() 
-next_send_interval = random.randint(5, 30) * 1000 
-total_time_in_game = 0 
+last_progress_send_time = pygame.time.get_ticks() # Per controlar l'enviament de progrés
+next_send_interval = random.randint(5, 30) * 1000 # Interval aleatori entre 5 i 30 segons
+total_time_in_game = 0 # Temps acumulat en l'estat "jugant"
 
-running = True 
+running = True # Variable de control del bucle principal
 while running:
-    current_time = pygame.time.get_ticks() 
+    current_time = pygame.time.get_ticks() # Temps actual del joc
 
     # --- Gestió d'Esdeveniments ---
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False 
+            running = False # Tancar el joc
 
         if estat == "menu":
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
-                if "menu_buttons" in locals(): 
+                # Comprovem si s'ha clicat un dels botons del menú
+                if "menu_buttons" in locals(): # Ens assegurem que menu_buttons existeix
                     if menu_buttons["dianes_classiques"].collidepoint(mouse_pos):
                         current_game_mode_name = "dianes_classiques"
+                        # Creem una instància de JocDianes i li passem la configuració específica
                         joc_actual = JocDianes(screen, GAME_MODES[current_game_mode_name]) 
-                        estat = "jugant" 
-                        last_progress_send_time = current_time 
+                        estat = "jugant" # Canviem a l'estat de joc
+                        last_progress_send_time = current_time # Reiniciem el temps per enviar progrés
                         total_time_in_game = 0
                         next_send_interval = random.randint(5, 30) * 1000 
                     elif menu_buttons["reaccio_llum"].collidepoint(mouse_pos):
                         current_game_mode_name = "reaccio_llum"
+                        # Creem una instància de JocReaccioLlum i li passem la configuració específica
                         joc_actual = JocReaccioLlum(screen, GAME_MODES[current_game_mode_name]) 
-                        estat = "jugant" 
-                        last_progress_send_time = current_time 
+                        estat = "jugant" # Canviem a l'estat de joc
+                        last_progress_send_time = current_time # Reiniciem el temps per enviar progrés
                         total_time_in_game = 0
                         next_send_interval = random.randint(5, 30) * 1000 
 
@@ -513,76 +535,91 @@ while running:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clic_pos = pygame.mouse.get_pos()
                 if joc_actual: # Assegura't que hi ha un joc actiu
-                    joc_actual.clicar(clic_pos)
+                    joc_actual.clicar(clic_pos) # Deleguem el clic al joc actual
 
         elif estat == "final":
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    running = False 
-                elif event.key == pygame.K_SPACE: 
+                    running = False # Sortir del joc
+                elif event.key == pygame.K_SPACE: # Tornar al menú
                     estat = "menu"
-                    joc_actual = None 
-                    final_score_info = {"score": 0}
-                    current_game_mode_name = "unknown"
-                    last_progress_send_time = pygame.time.get_ticks() 
+                    joc_actual = None # Reiniciem l'objecte de joc
+                    final_score_info = {"score": 0} # Reiniciem la puntuació final
+                    current_game_mode_name = "unknown" # Reiniciem el nom del joc
+                    last_progress_send_time = pygame.time.get_ticks() # Reiniciem el temps per enviar progrés
                     total_time_in_game = 0
                     next_send_interval = random.randint(5, 30) * 1000 
 
 
     # --- Actualització i Dibuix del Joc segons l'Estat ---
     if estat == "menu":
-        menu_buttons = pantalla_menu(screen) 
+        menu_buttons = pantalla_menu(screen) # Dibuixem el menú i guardem els rects dels botons
     
     elif estat == "jugant":
         if joc_actual:
-            joc_actual.actualitzar()
-            joc_actual.dibuixar()
+            joc_actual.actualitzar() # Actualitzem la lògica del joc actual
+            joc_actual.dibuixar(total_time_in_game) # Dibuixem el joc actual
 
-            total_time_in_game += clock.get_time() 
+            total_time_in_game += clock.get_time() # Sumem el temps del frame al temps total
 
-            # Envia progrés al servidor (ara depèn del tipus de joc)
+            # Envia progrés al servidor regularment
             if current_time - last_progress_send_time >= next_send_interval:
                 current_level = 0
                 current_score = 0
                 extra_server_data = None
 
+                # Obtenim les dades segons el tipus de joc
                 if current_game_mode_name == "dianes_classiques":
                     current_level = joc_actual.nivell
                     current_score = joc_actual.score
                 elif current_game_mode_name == "reaccio_llum":
                     current_level = joc_actual.ronda_actual
                     current_score = joc_actual.score
-                    # Envia la mitjana de reacció en els enviaments de progrés intermedis si ja hi ha hagut reaccions
+                    # Enviem la mitjana de reacció en els enviaments de progrés intermedis si ja hi ha hagut reaccions
                     if joc_actual.ronda_actual > 1:
-                        extra_server_data = {"avg_reaction_time": int(joc_actual.temps_total_reaccio / (joc_actual.ronda_actual -1))}
+                        # Assegurem que temps_total_reaccio és major que 0 abans de la divisió
+                        if joc_actual.temps_total_reaccio > 0 and (joc_actual.ronda_actual - 1) > 0:
+                            extra_server_data = {"avg_reaction_time": int(joc_actual.temps_total_reaccio / (joc_actual.ronda_actual -1))}
+                        else:
+                            extra_server_data = {"avg_reaction_time": 0} # O un altre valor predeterminat si no hi ha dades vàlides
 
                 send_progress_to_server(current_level, current_score, total_time_in_game, is_final=False, 
                                         game_mode_name=current_game_mode_name, extra_data=extra_server_data)
                 last_progress_send_time = current_time
-                next_send_interval = random.randint(5, 30) * 1000 
-            
-            # Comprova si el joc actual ha acabat
+                next_send_interval = random.randint(5, 30) * 1000 # Reiniciem l'interval
+
+            # --- Lògica CLAU: Pujada de nivell per al joc de dianes (ARA PRIMER!) ---
+            # Aquesta part és crucial i assegura que el nivell puja abans de comprovar el temps.
+            if current_game_mode_name == "dianes_classiques":
+                if joc_actual.nivell_complet():
+                    joc_actual.nivell += 1
+                    joc_actual.crear_nivell() # Crea un nou nivell amb dianes més ràpides/nombroses
+            # ---------------------------------------------------------------------
+                
+            # Comprova si el joc actual ha acabat (sigui de dianes o de reacció)
+            # AQUESTA COMPROVACIÓ ARA VA DESPRÉS DE LA PUJADA DE NIVELL PER A DIANES
             if (current_game_mode_name == "dianes_classiques" and joc_actual.temps_acabat()) or \
                (current_game_mode_name == "reaccio_llum" and joc_actual.joc_acabat()):
                 
-                estat = "final"
+                estat = "final" # Canviem a l'estat final
                 
+                # Preparem la puntuació final per mostrar i enviar al servidor
                 if current_game_mode_name == "dianes_classiques":
                     final_score_info["score"] = joc_actual.score 
                     send_progress_to_server(joc_actual.nivell, joc_actual.score, total_time_in_game, is_final=True, 
                                             game_mode_name=current_game_mode_name)
                 elif current_game_mode_name == "reaccio_llum":
-                    final_data = joc_actual.get_final_score()
+                    final_data = joc_actual.get_final_score() # Obtenim les dades finals del joc de reacció
                     final_score_info["score"] = final_data["score"]
                     final_score_info["avg_reaction_time"] = final_data["avg_reaction_time"]
                     send_progress_to_server(joc_actual.ronda_actual, final_data["score"], total_time_in_game, is_final=True, 
                                             game_mode_name=current_game_mode_name, extra_data={"avg_reaction_time": final_data["avg_reaction_time"]})
 
     elif estat == "final":
-        pantalla_final(final_score_info, screen, current_game_mode_name)
+        pantalla_final(final_score_info, screen, current_game_mode_name) # Dibuixem la pantalla final
 
     # --- Actualització de Pantalla i Control de FPS ---
-    pygame.display.flip() 
-    clock.tick(FPS) 
+    pygame.display.flip() # Actualitza tota la pantalla
+    clock.tick(FPS) # Limita el joc a 60 frames per segon
 
-pygame.quit()
+pygame.quit() # Tanca Pygame en sortir del bucle
