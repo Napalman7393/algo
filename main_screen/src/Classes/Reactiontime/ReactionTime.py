@@ -9,7 +9,7 @@ class ReactionTimeGame:
         self.pantalla = pygame.display.set_mode((self.amplada_pantalla, self.altura_pantalla))
         pygame.display.set_caption("Reaction Time Game")
 
-        self.fish = pygame.image.load("main_screen/images/Fish.png")
+       
         self.ja = False
         self.temps_espera = random.randint(1, 5) * 1000
         self.inici = pygame.time.get_ticks()
