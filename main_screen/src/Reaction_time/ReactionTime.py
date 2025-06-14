@@ -15,7 +15,11 @@ class ReactionTimeGame:
         self.inici = pygame.time.get_ticks()
         self.score = None
         self.panSco = False
-        
+        self.font = pygame.font.SysFont(None, 74)
+        self.massadora = False
+        self.waitButton = pygame.image.load("main_screen/src/Reaction_time/Wait_button.png")
+        self.retryButton = pygame.image.load("main_screen/src/Reaction_time/Retry_ReactionTime.png")
+        self.AgainButton = pygame.image.load("main_screen/src/Reaction_time/Again_Button.png")
         # PanSco és una variable per controlar si s'ha de mostrar el text del temps de reacció a la pantalla o no.
 
     def run(self):
@@ -32,7 +36,8 @@ class ReactionTimeGame:
                     self.panSco = True
 
                 if not self.ja and event.type == pygame.MOUSEBUTTONDOWN:
-                    self.perdTxt = self.font.render(f"Massa d'hora", True, (0, 0, 0))
+                    self.massadora = True
+                    
 
 
             temps_actual = pygame.time.get_ticks()
@@ -41,12 +46,18 @@ class ReactionTimeGame:
 
             if not self.ja:
                 self.pantalla.fill("Red")
+                self.pantalla.blit(self.waitButton, (self.amplada_pantalla // 2 - self.waitButton.get_width() // 2, self.altura_pantalla // 2 - self.waitButton.get_height() // 2))
+            
+                if self.massadora:
+                    self.pantalla.blit(self.retryButton, (self.amplada_pantalla // 2 - self.retryButton.get_width() // 2, self.altura_pantalla // 2 - self.retryButton.get_height() // 2))
+                    runin = False
             elif self.panSco:
                 self.pantalla.fill("lightblue")
                 self.pantalla.blit(self.score_text, (0, 0))
+                self.pantalla.blit(self.AgainButton, (self.amplada_pantalla // 2 - self.AgainButton.get_width() // 2, self.altura_pantalla // 2 - self.AgainButton.get_height() // 2))
             else:
                 self.pantalla.fill("Green")
-                    
+                
 
             pygame.display.update()
         pygame.quit()
