@@ -1,5 +1,6 @@
-import requests
+import random
 
-resposta = requests.get("https://jsonplaceholder.typicode.com/todos/3")
-dades = resposta.json()
-print(dades)
+random.seed(42)  # For reproducibility
+
+print(random.randint(1, 100))  # Example usage of random number generation
+print(random.randint(1, 100))  # Another example
