@@ -90,7 +90,7 @@ GAME_ID = 76 # L'identificador únic del teu joc
 
 class Diana:
     """Representa una diana al joc de dianes."""
-    def __init__(self, x, y, speed, diana_type_config):
+    def __init__(self, x, y, speed, diana_type_config): # A diana type config li passa el diccionari de configuració de la diana
         self.x = x
         self.y = y
         self.speed = speed
